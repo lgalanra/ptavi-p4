@@ -18,7 +18,7 @@ class EchoHandler(socketserver.DatagramRequestHandler):
             print("El cliente nos manda ", line.decode('utf-8'))
 
 if __name__ == "__main__":
-    serv = socketserver.UDPServer(('', 6001), EchoHandler)
+    serv = socketserver.UDPServer(('', 5060), EchoHandler)
     print("Lanzando servidor UDP de eco...")
     try:
         serv.serve_forever()
