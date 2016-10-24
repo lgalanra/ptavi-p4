@@ -8,9 +8,9 @@ import socketserver
 import sys
 
 
-class EchoHandler(socketserver.DatagramRequestHandler):
+class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
-    Echo server class
+    SIP Register server class
     """
 
     def handle(self):
