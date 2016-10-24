@@ -20,6 +20,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
     def handle(self):
+    """
+    Método principal para manejar mensajes cliente servidor
+    """
         if self.lists == []:
             self.json2registered()
 
@@ -43,6 +46,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print(self.dicc)
 
     def register2json(self):
+    """
+    Método para almacenar correctamente los datos al json
+    """
         exptime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(self.expire)
                                 + time.time()))
         auxdicc = {'address': self.client_address[0],'expires': exptime}
@@ -60,6 +66,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     sort_keys=True, indent=4, separators=(',', ': '))
 
     def json2registered(self):
+    """
+    Método para comprobar al inicio si ya existía un json del que tomar los datos
+    """
         try:
             self.lists = json.load(open("registered.json",'r'))
         except:
