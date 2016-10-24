@@ -13,6 +13,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     SIP Register server class
     """
     dicc = {}
+    skdjhdjhfd
 
     def handle(self):
         self.wfile.write(b"Hemos recibido tu peticion")
