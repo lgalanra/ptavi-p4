@@ -12,6 +12,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     SIP Register server class
     """
+    dicc = {}
 
     def handle(self):
         self.wfile.write(b"Hemos recibido tu peticion")
@@ -25,7 +26,7 @@ if __name__ == "__main__":
         PORT = int(sys.argv[1])
     except PortError:
         print("Introducir puerto escucha del servidor")
-    serv = socketserver.UDPServer(('', PORT), EchoHandler)
+    serv = socketserver.UDPServer(('', PORT), SIPRegisterHandler)
     print("Lanzando servidor UDP de eco...")
     try:
         serv.serve_forever()
