@@ -9,6 +9,7 @@ import sys
 import json
 import time
 
+
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     SIP Register server class
@@ -18,11 +19,10 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     lists = []
     direction = ''
 
-
     def handle(self):
-    """
-    Método principal para manejar mensajes cliente servidor
-    """
+        """
+        Método principal para manejar mensajes cliente servidor
+        """
         if self.lists == []:
             self.json2registered()
 
@@ -46,12 +46,12 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print(self.dicc)
 
     def register2json(self):
-    """
-    Método para almacenar correctamente los datos al json
-    """
-        exptime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(self.expire)
-                                + time.time()))
-        auxdicc = {'address': self.client_address[0],'expires': exptime}
+        """
+        Método para almacenar correctamente los datos al json
+        """
+        exptime = time.strftime('%Y-%m-%d %H:%M:%S',
+                                time.gmtime(int(self.expire) + time.time()))
+        auxdicc = {'address': self.client_address[0], 'expires': exptime}
 
         for l in self.lists:
             if l[0] == self.direction:
@@ -62,15 +62,15 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if l[1]['expires'] <= time.strftime('%Y-%m-%d %H:%M:%S',
                                                 time.gmtime(time.time())):
                 self.lists.remove(l)
-        json.dump(self.lists, open("registered.json",'w'),
-                    sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump(self.lists, open("registered.json", 'w'),
+                  sort_keys=True, indent=4, separators=(',', ': '))
 
     def json2registered(self):
-    """
-    Método para comprobar al inicio si ya existía un json del que tomar los datos
-    """
+        """
+        Método para comprobar al inicio si ya existía un json
+        """
         try:
-            self.lists = json.load(open("registered.json",'r'))
+            self.lists = json.load(open("registered.json", 'r'))
         except:
             pass
 
