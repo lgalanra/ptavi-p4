@@ -16,6 +16,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     dicc = {}
     expire = ''
     lists = []
+    direction = ''
+
 
     def handle(self):
         print(self.client_address)
@@ -36,8 +38,19 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print(self.dicc)
 
     def register2json(self):
+        exptime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(self.expire)
+                                + time.time()))
+        auxdicc = {'address': self.client_address[0],'expires': expire}
 
+        for l in lists:
+            if l[0] == self.direction:
+                self.lists.remove(l)
+        self.lists.append([self.direction,auxdicc])
 
+        for l in self.lists:
+            if l[1]['expires'] <= time.strftime('%Y-%m-%d %H:%M:%S',
+                                                time.gmtime(time.time())):
+                self.lists.remove(l)
         json.dump(self.dicc, open("registered.json",'w'),
                     sort_keys=True, indent=4, separators=(',', ': '))
 
