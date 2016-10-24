@@ -27,11 +27,13 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
         if fields[0] == 'REGISTER':
             login = fields[1].split(':')
-            self.dicc[login[1]] = self.client_address[0]
+            self.direction = login[1]
+            self.dicc[self.direction] = self.client_address[0]
+            aux = fields[3].split('\r')
 
-            self.expire = fields[3].split('\r')
-            if int(self.expire[0]) == 0:
-                del self.dicc[login[1]]
+            self.expire = int(aux[0])
+            if self.expire == 0:
+                del self.dicc[self.direction]
 
         self.register2json()
         self.wfile.write(b"SIP/2.0 200 OK " + b'\r\n\r\n')
@@ -40,18 +42,18 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     def register2json(self):
         exptime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(self.expire)
                                 + time.time()))
-        auxdicc = {'address': self.client_address[0],'expires': expire}
+        auxdicc = {'address': self.client_address[0],'expires': exptime}
 
-        for l in lists:
+        for l in self.lists:
             if l[0] == self.direction:
                 self.lists.remove(l)
-        self.lists.append([self.direction,auxdicc])
+        self.lists.append([self.direction, auxdicc])
 
         for l in self.lists:
             if l[1]['expires'] <= time.strftime('%Y-%m-%d %H:%M:%S',
                                                 time.gmtime(time.time())):
                 self.lists.remove(l)
-        json.dump(self.dicc, open("registered.json",'w'),
+        json.dump(self.lists, open("registered.json",'w'),
                     sort_keys=True, indent=4, separators=(',', ': '))
 
 if __name__ == "__main__":
