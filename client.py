@@ -12,8 +12,8 @@ try:
     SERVER = sys.argv[1]
     PORT = int(sys.argv[2])
     lista = []
-    lista = sys(argv[3:])
-    texto = lista.join(lista)
+    lista = sys.argv[3:]
+    texto = " ".join(lista)
     LINE = texto
 except ValueError:
     sys.exit("Llamada incorrecta al programa")
