@@ -24,9 +24,12 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         if fields[0] == 'REGISTER':
             login = fields[1].split(':')
             self.dicc[login[1]] = self.client_address[0]
+            time = fields[3].split('\r')
+            if int(time[0]) == 0:
+                del self.dicc[login[1]]
+
             self.wfile.write(b"SIP/2.0 200 OK " + b'\r\n\r\n')
             print(self.dicc)
-
 
 if __name__ == "__main__":
     try:
