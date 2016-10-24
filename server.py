@@ -20,6 +20,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
 
     def handle(self):
+        if self.lists == []:
+            self.json2registered()
+
         print(self.client_address)
         request = self.rfile.read().decode('utf-8')
         print(request)
@@ -55,6 +58,12 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 self.lists.remove(l)
         json.dump(self.lists, open("registered.json",'w'),
                     sort_keys=True, indent=4, separators=(',', ': '))
+
+    def json2registered(self):
+        try:
+            self.lists = json.load(open("registered.json",'r'))
+        except:
+            pass
 
 if __name__ == "__main__":
     try:
